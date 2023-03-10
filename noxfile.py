@@ -197,7 +197,7 @@ def validate_readme(session: nox.Session) -> None:
 
     lines = requirements_file.read_text(encoding="utf-8").splitlines(keepends=False)
     module = _get_module_name()
-    linter_ver = list(line for line in lines if line.startswith(module))[0]
+    linter_ver = [line for line in lines if line.startswith(module)][0]
     name, version = linter_ver.split(" ")[0].split("==")
 
     session.log(f"Looking for {name}={version} in README.md")
@@ -211,7 +211,7 @@ def _update_readme() -> None:
     requirements_file = pathlib.Path(__file__).parent / "requirements.txt"
     lines = requirements_file.read_text(encoding="utf-8").splitlines(keepends=False)
     module = _get_module_name()
-    linter_ver = list(line for line in lines if line.startswith(module))[0]
+    linter_ver = [line for line in lines if line.startswith(module)][0]
     _, version = linter_ver.split(" ")[0].split("==")
 
     readme_file = pathlib.Path(__file__).parent / "README.md"

@@ -154,8 +154,7 @@ def _parse_output_using_regex(
     for line in lines:
         if line.startswith("'") and line.endswith("'"):
             line = line[1:-1]
-        match = DIAGNOSTIC_RE.match(line)
-        if match:
+        if match := DIAGNOSTIC_RE.match(line):
             data = match.groupdict()
             position = lsp.Position(
                 line=max([int(data["line"]) - line_offset, 0]),
@@ -239,16 +238,15 @@ QUICK_FIXES = QuickFixSolutions()
 )
 def code_action(params: lsp.CodeActionParams) -> List[lsp.CodeAction]:
     """LSP handler for textDocument/codeAction request."""
-    diagnostics = list(
+    diagnostics = [
         d for d in params.context.diagnostics if d.source == TOOL_DISPLAY
-    )
+    ]
 
     document = LSP_SERVER.workspace.get_document(params.text_document.uri)
 
     code_actions = []
     for diagnostic in diagnostics:
-        func = QUICK_FIXES.solutions(diagnostic.code)
-        if func:
+        if func := QUICK_FIXES.solutions(diagnostic.code):
             code_actions.extend(func(document, [diagnostic]))
 
     return code_actions
