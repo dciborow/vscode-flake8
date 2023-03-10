@@ -95,7 +95,7 @@ def main(package_json: pathlib.Path, argv: Sequence[str]) -> None:
         package["version"] = ".".join((major, minor, micro_build_number()))
 
     if not args.for_publishing and not args.release and len(suffix):
-        package["version"] += "-" + suffix
+        package["version"] += f"-{suffix}"
     print(f"Updating build TO: {package['version']}")
 
     # Overwrite package.json with new data add a new-line at the end of the file.
